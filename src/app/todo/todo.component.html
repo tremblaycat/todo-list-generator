@@ -2,26 +2,47 @@
   <section class="todo-container">
     <h1>TODO List</h1>
     <h2>A place to store your todos.</h2>
-    <form class="form">
-      <input type="text" placeholder="Filter your to-dos" />
+    <form class="form" #filterForm="ngForm" (input)="setSearchTerm(filterForm)">
+      <input
+        type="text"
+        name="searchTerm"
+        placeholder="Filter your to-dos"
+        ngModel
+      />
     </form>
 
+    <p *ngIf="todos.length === 0">Enter some todos!</p>
+
     <ol class="ordered-list">
-      <li *ngFor="let todo of todos">
+      <li *ngFor="let todo of myFilterMethod(); index as i">
         <div class="list-item">
-          <button class="complete" *ngIf="todo.completed === false">
+          <button
+            class="complete"
+            *ngIf="todo.completed === false"
+            (click)="completeTask(i)"
+          >
             Complete
           </button>
-          <p class="task" [ngClass]="{ strike: todo.completed }">
+          <p
+            *ngIf="showIndex !== i"
+            class="task"
+            [ngClass]="{ strike: todo.completed }"
+            (click)="setShowIndex(i)"
+          >
             {{ todo.task }}
           </p>
-          <button>X</button>
+          <form *ngIf="showIndex === i" (ngSubmit)="resetShowIndex()">
+            <input type="text" name="update" [(ngModel)]="todo.task" />
+          </form>
+          <button (click)="removeTask(i)">
+            X
+          </button>
         </div>
       </li>
     </ol>
 
-    <form class="form">
-      <input type="text" placeholder="Add your to-do" />
+    <form class="form" #addForm="ngForm" (ngSubmit)="addTask(addForm)">
+      <input type="text" name="task" placeholder="Add your to-do" ngModel />
       <button class="add">Add</button>
     </form>
   </section>

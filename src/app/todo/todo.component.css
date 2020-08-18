@@ -26,6 +26,12 @@
   border: 2px solid #ff69b4;
   background: white;
 }
+
+/* .update-form {
+  flex: 1;
+  display: flex;
+} */
+
 .add {
   background-color: #ff1493;
   color: white;
